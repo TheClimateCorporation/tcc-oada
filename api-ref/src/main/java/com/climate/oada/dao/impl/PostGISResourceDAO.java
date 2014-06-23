@@ -53,12 +53,7 @@ public final class PostGISResourceDAO implements IResourceDAO {
 
     }
 
-    /**
-     * Insert a land unit.
-     *
-     * @param lu - A land unit value object.
-     * @return boolean
-     */
+    @Override
     public boolean insert(LandUnit lu) {
         boolean retval = false;
         Connection conn = null;
@@ -92,12 +87,7 @@ public final class PostGISResourceDAO implements IResourceDAO {
 
     }
 
-    /**
-     * Retrieve user's fields.
-     *
-     * @param userId - user's id.
-     * @return list of land units.
-     */
+    @Override
     public List<LandUnit> getLandUnits(Long userId) {
         return getJdbcTemplate().query(SELECT_SQL_USER, new LandUnitRowMapper(), userId.toString());
     }

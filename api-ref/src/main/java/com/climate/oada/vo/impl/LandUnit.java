@@ -1,5 +1,7 @@
 package com.climate.oada.vo.impl;
 
+import java.util.Map;
+
 import com.climate.oada.vo.IResource;
 
 /**
@@ -26,6 +28,16 @@ public final class LandUnit implements IResource {
     public static final String OTHER_PROPS_ATTR_NAME = "other_props";
     public static final String GEOM_ATTR_NAME = "geom";
 
+    private static final String FARM_NAME_JSON_ATTR_NAME = "farmName";
+    private static final String CLIENT_NAME_JSON_ATTR_NAME = "clientName";
+    private static final String BOUNDARY_JSON_ATTR_NAME = "boundary";
+
+    private static final String POLYGON_TAG = "Polygon";
+    private static final String MULTI_POLYGON_TAG = "MultiPolygon";
+
+    private static final String TO_STR_TAG_1 = " : ";
+    private static final String TO_STR_TAG_2 = ", ";
+
     private Long userId;
     private Long unitId;
     private String name;
@@ -41,6 +53,20 @@ public final class LandUnit implements IResource {
      */
     public LandUnit() {
 
+    }
+
+    /**
+     * Map based constructor.
+     *
+     * @param kv - Map of key-value pairs.
+     */
+    public LandUnit(Map<String, String> kv) {
+        setName(kv.get(NAME_ATTR_NAME));
+        setFarmName(kv.get(FARM_NAME_JSON_ATTR_NAME));
+        setClientName(kv.get(CLIENT_NAME_JSON_ATTR_NAME));
+        setAcres(new Float(kv.get(ACRES_ATTR_NAME)));
+        setSource(kv.get(SOURCE_ATTR_NAME));
+        setWktBoundary(kv.get(BOUNDARY_JSON_ATTR_NAME));
     }
 
     /**
@@ -152,7 +178,9 @@ public final class LandUnit implements IResource {
      * @param boundary - the wktBoundary to set
      */
     public void setWktBoundary(String boundary) {
-        this.wktBoundary = boundary;
+        if (boundary.contains(POLYGON_TAG) || boundary.contains(MULTI_POLYGON_TAG)) {
+            this.wktBoundary = boundary;
+        }
     }
 
     /**
@@ -167,5 +195,17 @@ public final class LandUnit implements IResource {
      */
     public void setOtherProps(String props) {
         this.otherProps = props;
+    }
+
+    @Override
+    public String toString() {
+        String retval = ID_ATTR_NAME + TO_STR_TAG_1 + getUnitId() + TO_STR_TAG_2
+                + USER_ID_ATTR_NAME + TO_STR_TAG_1 + getUserId() + TO_STR_TAG_2
+                + NAME_ATTR_NAME + TO_STR_TAG_1  + getName() + TO_STR_TAG_2
+                + CLIENT_NAME_ATTR_NAME + TO_STR_TAG_1  + getClientName() + TO_STR_TAG_2
+                + ACRES_ATTR_NAME + TO_STR_TAG_1  + getAcres() + TO_STR_TAG_2
+                + SOURCE_ATTR_NAME + TO_STR_TAG_1  + getSource() + TO_STR_TAG_2
+                + GEOM_ATTR_NAME + TO_STR_TAG_1  + getWktBoundary();
+        return retval;
     }
 }

@@ -51,12 +51,8 @@ public final class DynamodbDAO implements IResourceDAO {
         dynamoDB = new AmazonDynamoDBClient(credentials);
     }
 
-    /**
-     * Insert a land unit.
-     *
-     * @param lu - A land unit value object.
-     * @return boolean
-     */
+
+    @Override
     public boolean insert(LandUnit lu) {
         boolean retval = false;
         Map<String, AttributeValue> item = new HashMap<String, AttributeValue>();
@@ -80,12 +76,8 @@ public final class DynamodbDAO implements IResourceDAO {
         return retval;
     }
 
-    /**
-     * Retrieve user's fields.
-     *
-     * @param userId - user's id.
-     * @return list of land units.
-     */
+
+    @Override
     public List<LandUnit> getLandUnits(Long userId) {
         /*
          * Scan items for movies with user id attribute.
