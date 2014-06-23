@@ -25,6 +25,7 @@
     <spring.saml.version>1.0.0.RC2</spring.saml.version>
     <pg.driver.version>9.2-1002-jdbc4</pg.driver.version>
     <aws.sdk.version>1.7.13</aws.sdk.version>
+    <jackson.version>2.4.1</jackson.version>
   </properties>
 
   <dependencies>
@@ -185,6 +186,26 @@
       <groupId>com.amazonaws</groupId>
       <artifactId>aws-java-sdk</artifactId>
       <version>${aws.sdk.version}</version>
+    </dependency>
+
+    <!-- Jackson dependencies -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${jackson.version}</version>
+    </dependency>
+
+    <!-- Junit & Mockito -->
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>4.11</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.9.5</version>
     </dependency>
 
   </dependencies>
