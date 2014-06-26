@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -31,6 +32,7 @@ public interface IOADAAPI {
      *
      * This REST API specifically returns a list of resources.
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      *
@@ -38,7 +40,8 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
     @ResponseBody
-    List<IResource> getResources(HttpServletRequest request,
+    List<IResource> getResources(@RequestHeader(value = "Authorization") String accessToken,
+            HttpServletRequest request,
             HttpServletResponse response);
 
     /**
@@ -50,6 +53,7 @@ public interface IOADAAPI {
      *
      * This REST API specifically updates resources via POST.
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resources JSON body
      * @param request HttpServletRequest
      * @param response HttpServletResponse
@@ -58,12 +62,14 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources", method = RequestMethod.POST)
     @ResponseBody
-    List<IResource> updateResources(@RequestBody String resources, HttpServletRequest request,
+    List<IResource> updateResources(@RequestHeader(value = "Authorization") String accessToken,
+            @RequestBody String resources, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Returns a specific resource identified by a "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -73,13 +79,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}", method = RequestMethod.GET)
     @ResponseBody
-    IResource getResource(@PathVariable String resourceId, HttpServletRequest request,
+    IResource getResource(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Updates a specific resource identified by a "resourceId" and returns the
      * same.
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -89,13 +97,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}", method = RequestMethod.POST)
     @ResponseBody
-    IResource updateResource(@PathVariable String resourceId, HttpServletRequest request,
+    IResource updateResource(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Returns actual data (binary or other wise) associated with a specific
      * resource identified by a "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -105,13 +115,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/data", method = RequestMethod.GET)
     @ResponseBody
-    IResource getResourceData(@PathVariable String resourceId, HttpServletRequest request,
+    IResource getResourceData(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Updates actual data (binary or other wise) associated with a specific
      * resource identified by a "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -121,13 +133,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/data", method = RequestMethod.POST)
     @ResponseBody
-    IResource updateResourceData(@PathVariable String resourceId, HttpServletRequest request,
+    IResource updateResourceData(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Returns meta data associated with a specific resource identified by a
      * "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -137,13 +151,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/meta", method = RequestMethod.GET)
     @ResponseBody
-    IResource getResourceMeta(@PathVariable String resourceId, HttpServletRequest request,
+    IResource getResourceMeta(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Updates meta data associated with a specific resource identified by a
      * "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -153,13 +169,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/meta", method = RequestMethod.POST)
     @ResponseBody
-    IResource updateResourceMeta(@PathVariable String resourceId, HttpServletRequest request,
+    IResource updateResourceMeta(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Returns formats associated with a specific resource identified by a
      * "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -169,13 +187,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/formats", method = RequestMethod.GET)
     @ResponseBody
-    List<String> getResourceFormats(@PathVariable String resourceId, HttpServletRequest request,
+    List<String> getResourceFormats(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Updates formats associated with a specific resource identified by a
      * "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -185,13 +205,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/formats", method = RequestMethod.POST)
     @ResponseBody
-    List<String> updateResourceFormats(@PathVariable String resourceId, HttpServletRequest request,
+    List<String> updateResourceFormats(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Returns parents associated with a specific resource identified by a
      * "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -201,13 +223,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/parents", method = RequestMethod.GET)
     @ResponseBody
-    List<IResource> getResourceParents(@PathVariable String resourceId, HttpServletRequest request,
+    List<IResource> getResourceParents(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Updates parents associated with a specific resource identified by a
      * "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -217,13 +241,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/parents", method = RequestMethod.POST)
     @ResponseBody
-    List<IResource> updateResourceParents(@PathVariable String resourceId, HttpServletRequest request,
+    List<IResource> updateResourceParents(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Returns children associated with a specific resource identified by a
      * "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -233,13 +259,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/children", method = RequestMethod.GET)
     @ResponseBody
-    List<IResource> getResourceChildren(@PathVariable String resourceId, HttpServletRequest request,
+    List<IResource> getResourceChildren(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Updates children associated with a specific resource identified by a
      * "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -249,13 +277,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/children", method = RequestMethod.POST)
     @ResponseBody
-    List<IResource> upateResourceChildren(@PathVariable String resourceId, HttpServletRequest request,
+    List<IResource> upateResourceChildren(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Returns permissions associated with a specific resource identified by a
      * "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -265,13 +295,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/permissions", method = RequestMethod.GET)
     @ResponseBody
-    List<IPermission> getResourcePermissions(@PathVariable String resourceId, HttpServletRequest request,
+    List<IPermission> getResourcePermissions(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Updates permissions associated with a specific resource identified by a
      * "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -281,13 +313,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/permissions", method = RequestMethod.POST)
     @ResponseBody
-    List<IPermission> updateResourcePermissions(@PathVariable String resourceId, HttpServletRequest request,
+    List<IPermission> updateResourcePermissions(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Returns syncs performed with a specific resource identified by a
      * "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -297,13 +331,15 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/syncs", method = RequestMethod.GET)
     @ResponseBody
-    String getResourceSyncs(@PathVariable String resourceId, HttpServletRequest request,
+    String getResourceSyncs(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
     /**
      * Returns syncs performed with a specific resource identified by a
      * "resourceId".
      *
+     * @param accessToken - OAuth 2.0 token.
      * @param resourceId
      *            - Id for the resource.
      * @param request HttpServletRequest
@@ -313,7 +349,8 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources/{resourceId}/syncs", method = RequestMethod.POST)
     @ResponseBody
-    String updateResourceSyncs(@PathVariable String resourceId, HttpServletRequest request,
+    String updateResourceSyncs(@RequestHeader(value = "Authorization") String accessToken,
+            @PathVariable String resourceId, HttpServletRequest request,
             HttpServletResponse response);
 
 }

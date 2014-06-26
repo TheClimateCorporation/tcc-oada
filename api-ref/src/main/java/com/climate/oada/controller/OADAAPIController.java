@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.climate.oada.api.IOADAAPI;
 import com.climate.oada.dao.IResourceDAO;
@@ -42,15 +43,20 @@ public final class OADAAPIController implements IOADAAPI {
     }
 
     @Override
-    public List<IResource> getResources(HttpServletRequest request,
+    public List<IResource> getResources(
+            @RequestHeader(value = "Authorization") String accessToken,
+            HttpServletRequest request,
             HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<IResource> updateResources(String resources,
+    public List<IResource> updateResources(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resources,
             HttpServletRequest request, HttpServletResponse response) {
+        // TODO Unravel or map accessToken to user id.
         String inContentType = request.getContentType();
         if (OADA_FIELDS_CONTENT_TYPE.equalsIgnoreCase(inContentType)) {
             /*
@@ -68,112 +74,144 @@ public final class OADAAPIController implements IOADAAPI {
     }
 
     @Override
-    public IResource getResource(String resourceId, HttpServletRequest request,
+    public IResource getResource(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId, HttpServletRequest request,
             HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public IResource updateResource(String resourceId,
+    public IResource updateResource(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public IResource getResourceData(String resourceId,
+    public IResource getResourceData(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public IResource updateResourceData(String resourceId,
+    public IResource updateResourceData(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public IResource getResourceMeta(String resourceId,
+    public IResource getResourceMeta(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public IResource updateResourceMeta(String resourceId,
+    public IResource updateResourceMeta(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<String> getResourceFormats(String resourceId,
+    public List<String> getResourceFormats(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<String> updateResourceFormats(String resourceId,
+    public List<String> updateResourceFormats(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<IResource> getResourceParents(String resourceId,
+    public List<IResource> getResourceParents(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<IResource> updateResourceParents(String resourceId,
+    public List<IResource> updateResourceParents(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<IResource> getResourceChildren(String resourceId,
+    public List<IResource> getResourceChildren(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<IResource> upateResourceChildren(String resourceId,
+    public List<IResource> upateResourceChildren(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<IPermission> getResourcePermissions(String resourceId,
+    public List<IPermission> getResourcePermissions(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<IPermission> updateResourcePermissions(String resourceId,
+    public List<IPermission> updateResourcePermissions(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public String getResourceSyncs(String resourceId,
+    public String getResourceSyncs(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public String updateResourceSyncs(String resourceId,
+    public String updateResourceSyncs(
+            @RequestHeader(value = "Authorization") String accessToken,
+            String resourceId,
             HttpServletRequest request, HttpServletResponse response) {
         // TODO Auto-generated method stub
         return null;
