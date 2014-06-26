@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns="http://www.springframework.org/schema/security"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
+  xmlns:sec="http://www.springframework.org/schema/security" xmlns:oauth="http://www.springframework.org/schema/security/oauth2"
+  xsi:schemaLocation="
+      http://www.springframework.org/schema/security
+      http://www.springframework.org/schema/security/spring-security-3.2.xsd
+      http://www.springframework.org/schema/beans
+      http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+      http://www.springframework.org/schema/security/oauth2
+      http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd">
+
+  <beans:bean id="restAuthenticationEntryPoint"
+    class="com.climate.oada.security.RestAuthenticationEntryPoint" />
+
+  <beans:bean id="mySuccessHandler"
+    class="com.climate.oada.security.RestAuthenticationSuccessHandler" />
+
+  <beans:bean id="myFailureHandler"
+    class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" />
+
+  <http pattern="/oauth/token" create-session="stateless"
+    authentication-manager-ref="authenticationManager"
+    xmlns="http://www.springframework.org/schema/security">
+    <intercept-url pattern="/oauth/token" access="IS_AUTHENTICATED_FULLY" />
+    <anonymous enabled="false" />
+    <http-basic entry-point-ref="clientAuthenticationEntryPoint" />
+    <custom-filter ref="clientCredentialsTokenEndpointFilter"
+      before="BASIC_AUTH_FILTER" />
+    <access-denied-handler ref="oauthAccessDeniedHandler" />
+  </http>
+
+  <beans:bean id="clientCredentialsTokenEndpointFilter"
+    class="org.springframework.security.oauth2.provider.client.ClientCredentialsTokenEndpointFilter">
+    <beans:property name="authenticationManager" ref="authenticationManager" />
+  </beans:bean>
+
+  <authentication-manager alias="authenticationManager"
+    xmlns="http://www.springframework.org/schema/security">
+    <authentication-provider user-service-ref="clientDetailsUserService" />
+  </authentication-manager>
+
+  <beans:bean id="clientDetailsUserService"
+    class="org.springframework.security.oauth2.provider.client.ClientDetailsUserDetailsService">
+    <beans:constructor-arg ref="clientDetails" />
+  </beans:bean>
+
+  <beans:bean id="clientDetails"
+    class="com.climate.oada.security.oauth.ClientDetailsServiceImpl" />
+
+  <beans:bean id="clientAuthenticationEntryPoint"
+    class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+    <beans:property name="realmName" value="springsec/client" />
+    <beans:property name="typeName" value="Basic" />
+  </beans:bean>
+
+  <beans:bean id="oauthAccessDeniedHandler"
+    class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler" />
+
+  <oauth:authorization-server
+    client-details-service-ref="clientDetails" token-services-ref="tokenServices">
+    <oauth:authorization-code />
+    <oauth:implicit />
+    <oauth:refresh-token />
+    <oauth:client-credentials />
+    <oauth:password authentication-manager-ref="userAuthenticationManager" />
+  </oauth:authorization-server>
+
+  <authentication-manager id="userAuthenticationManager"
+    xmlns="http://www.springframework.org/schema/security">
+    <authentication-provider ref="customUserAuthenticationProvider">
+    </authentication-provider>
+  </authentication-manager>
+
+  <beans:bean id="customUserAuthenticationProvider"
+    class="com.climate.oada.security.oauth.CustomUserAuthenticationProvider">
+  </beans:bean>
+
+  <beans:bean id="tokenServices"
+    class="org.springframework.security.oauth2.provider.token.DefaultTokenServices">
+    <beans:property name="tokenStore" ref="tokenStore" />
+    <beans:property name="supportRefreshToken" value="true" />
+    <beans:property name="accessTokenValiditySeconds"
+      value="900000000"></beans:property>
+    <beans:property name="clientDetailsService" ref="clientDetails" />
+  </beans:bean>
+
+  <beans:bean id="tokenStore"
+    class="org.springframework.security.oauth2.provider.token.InMemoryTokenStore" />
+
+  <beans:bean id="oauthAuthenticationEntryPoint"
+    class="org.springframework.security.oauth2.provider.error.OAuth2AuthenticationEntryPoint">
+  </beans:bean>
+
+  <http pattern="/oada/**" create-session="never"
+    entry-point-ref="oauthAuthenticationEntryPoint" xmlns="http://www.springframework.org/schema/security">
+    <anonymous enabled="false" />
+    <intercept-url pattern="/oada/**" />
+    <custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+    <access-denied-handler ref="oauthAccessDeniedHandler" />
+  </http>
+
+  <oauth:resource-server id="resourceServerFilter"
+    resource-id="springsec" token-services-ref="tokenServices" />
+
+  <beans:bean id="accessDecisionManager"
+    class="org.springframework.security.access.vote.UnanimousBased" xmlns="http://www.springframework.org/schema/beans">
+    <beans:constructor-arg>
+      <list>
+        <beans:bean
+          class="org.springframework.security.oauth2.provider.vote.ScopeVoter" />
+        <beans:bean class="org.springframework.security.access.vote.RoleVoter" />
+        <beans:bean
+          class="org.springframework.security.access.vote.AuthenticatedVoter" />
+      </list>
+    </beans:constructor-arg>
+  </beans:bean>
+
+  <http pattern="/logout" create-session="never"
+    entry-point-ref="oauthAuthenticationEntryPoint"
+    access-decision-manager-ref="accessDecisionManager"
+    xmlns="http://www.springframework.org/schema/security">
+    <anonymous enabled="false" />
+    <intercept-url pattern="/logout" access="ROLE_CLIENT"
+      method="GET" />
+    <sec:logout invalidate-session="true" logout-url="/logout"
+      success-handler-ref="logoutSuccessHandler" />
+    <custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+    <access-denied-handler ref="oauthAccessDeniedHandler" />
+  </http>
+
+  <beans:bean id="logoutSuccessHandler" class="com.climate.oada.security.oauth.LogoutImpl">
+    <beans:property name="tokenStore" ref="tokenStore"></beans:property>
+  </beans:bean>
+
+  <!-- <http entry-point-ref="restAuthenticationEntryPoint"> -->
+  <!-- <intercept-url pattern="/oada/**" access="ROLE_USER" /> -->
+  <!-- <intercept-url pattern="/oauth/authorize" access="ROLE_USER" /> -->
+  <!-- <form-login authentication-success-handler-ref="mySuccessHandler" -->
+  <!-- authentication-failure-handler-ref="myFailureHandler" /> -->
+  <!-- <logout /> -->
+  <!-- </http> -->
+
+  <!-- <authentication-manager alias="authenticationManager"> -->
+  <!-- <authentication-provider> -->
+  <!-- <user-service> -->
+  <!-- <user name="temporary" password="temporary" authorities="ROLE_ADMIN"
+    /> -->
+  <!-- <user name="user" password="user" authorities="ROLE_USER" /> -->
+  <!-- </user-service> -->
+  <!-- </authentication-provider> -->
+  <!-- </authentication-manager> -->
+
+</beans:beans>
