@@ -7,6 +7,7 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.PropertiesCredentials;
@@ -116,6 +117,11 @@ public final class DynamodbDAO implements IResourceDAO {
             retval.add(lu);
         }
         return retval;
+    }
+
+    @Override
+    public boolean saveFile(MultipartFile f) throws Exception {
+        throw new UnsupportedOperationException("DynamoDDB DAO does not support file upload");
     }
 
 }

@@ -14,4 +14,10 @@
   <bean id="pgresourceDAO" class="com.climate.oada.dao.impl.PostGISResourceDAO">
     <property name="dataSource" ref="dataSource" />
   </bean>
+
+  <bean id="ddbDAO" class="com.climate.oada.dao.impl.DynamodbDAO">
+  </bean>
+
+  <bean id="s3DAO" class="com.climate.oada.dao.impl.S3ResourceDAO">
+  </bean>
 </beans>

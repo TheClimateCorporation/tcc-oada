@@ -12,9 +12,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.climate.oada.api.IOADAAPI;
 import com.climate.oada.dao.IResourceDAO;
+import com.climate.oada.dao.impl.S3ResourceDAO;
 import com.climate.oada.vo.IPermission;
 import com.climate.oada.vo.IResource;
 import com.climate.oada.vo.impl.LandUnit;
@@ -33,13 +36,17 @@ public final class OADAAPIController implements IOADAAPI {
     static final String JSON_ARRAY_END = "]";
 
     private ObjectMapper mapper = new ObjectMapper();
+    /*
+     * TODO Dependency inject these.
+     */
     private IResourceDAO resourceDAO;
+    private S3ResourceDAO s3DAO;
 
     /**
      * Default constructor.
      */
     public OADAAPIController() {
-
+        s3DAO = new S3ResourceDAO();
     }
 
     @Override
@@ -71,6 +78,23 @@ public final class OADAAPIController implements IOADAAPI {
             }
         }
         return null;
+    }
+
+    @Override
+    public Map<String, String> uploadFile(
+            @RequestHeader(value = "Authorization", required = true) String accessToken,
+            @RequestParam("file") MultipartFile file) {
+        Map<String, String> retval = new HashMap<String, String>();
+        try {
+            boolean uploadStatus = getS3DAO().saveFile(file);
+            if (uploadStatus) {
+                retval.put("Uploaded file name", file.getOriginalFilename());
+                retval.put("fileSize", new Long(file.getSize()).toString());
+            }
+        } catch (Exception e) {
+            retval.put("Upload failed, reason", e.getMessage());
+        }
+        return retval;
     }
 
     @Override
@@ -260,4 +284,21 @@ public final class OADAAPIController implements IOADAAPI {
     public void setResourceDAO(IResourceDAO dao) {
         this.resourceDAO = dao;
     }
+
+    /**
+     * Getter for S3 DAO.
+     * @return the s3DAO
+     */
+    public IResourceDAO getS3DAO() {
+        return s3DAO;
+    }
+
+    /**
+     * Setter for S3 DAO.
+     * @param s3dao the s3DAO to set
+     */
+    public void setS3DAO(S3ResourceDAO s3dao) {
+        s3DAO = s3dao;
+    }
+
 }

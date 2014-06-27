@@ -1,7 +1,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
   xmlns:context="http://www.springframework.org/schema/context"
-  xmlns:mvc="http://www.springframework.org/schema/mvc"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.springframework.org/schema/beans
                       http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
                       http://www.springframework.org/schema/context
@@ -11,9 +10,16 @@
 
   <import resource="spring-datasource.xml" />
 
+  <context:property-placeholder location="classpath:oada-api-ref.properties" />
+
   <context:component-scan base-package="com.climate.oada.controller" />
 
   <mvc:annotation-driven />
+
+  <bean id="multipartResolver"
+    class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+    <property name="maxUploadSize" value="268435456" /> <!-- 256 megs -->
+  </bean>
 
   <bean
     class="org.springframework.web.servlet.view.InternalResourceViewResolver">
