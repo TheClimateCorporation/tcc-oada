@@ -2,6 +2,8 @@ package com.climate.oada.dao;
 
 import java.util.List;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.climate.oada.vo.impl.LandUnit;
 
 /**
@@ -24,4 +26,13 @@ public interface IResourceDAO {
      * @return list of land units.
      */
     List<LandUnit> getLandUnits(Long userId);
+
+    /**
+     * Save a file.
+     *
+     * @param f - file to upload.
+     * @return boolean
+     * @throws Exception TODO
+     */
+    boolean saveFile(MultipartFile f) throws Exception;
 }

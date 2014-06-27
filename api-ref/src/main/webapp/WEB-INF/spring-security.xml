@@ -10,15 +10,6 @@
       http://www.springframework.org/schema/security/oauth2
       http://www.springframework.org/schema/security/spring-security-oauth2-1.0.xsd">
 
-  <beans:bean id="restAuthenticationEntryPoint"
-    class="com.climate.oada.security.RestAuthenticationEntryPoint" />
-
-  <beans:bean id="mySuccessHandler"
-    class="com.climate.oada.security.RestAuthenticationSuccessHandler" />
-
-  <beans:bean id="myFailureHandler"
-    class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler" />
-
   <http pattern="/oauth/token" create-session="stateless"
     authentication-manager-ref="authenticationManager"
     xmlns="http://www.springframework.org/schema/security">
@@ -93,7 +84,8 @@
   </beans:bean>
 
   <http pattern="/oada/**" create-session="never"
-    entry-point-ref="oauthAuthenticationEntryPoint" xmlns="http://www.springframework.org/schema/security">
+    entry-point-ref="oauthAuthenticationEntryPoint"
+    xmlns="http://www.springframework.org/schema/security">
     <anonymous enabled="false" />
     <intercept-url pattern="/oada/**" />
     <custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
@@ -132,23 +124,5 @@
   <beans:bean id="logoutSuccessHandler" class="com.climate.oada.security.oauth.LogoutImpl">
     <beans:property name="tokenStore" ref="tokenStore"></beans:property>
   </beans:bean>
-
-  <!-- <http entry-point-ref="restAuthenticationEntryPoint"> -->
-  <!-- <intercept-url pattern="/oada/**" access="ROLE_USER" /> -->
-  <!-- <intercept-url pattern="/oauth/authorize" access="ROLE_USER" /> -->
-  <!-- <form-login authentication-success-handler-ref="mySuccessHandler" -->
-  <!-- authentication-failure-handler-ref="myFailureHandler" /> -->
-  <!-- <logout /> -->
-  <!-- </http> -->
-
-  <!-- <authentication-manager alias="authenticationManager"> -->
-  <!-- <authentication-provider> -->
-  <!-- <user-service> -->
-  <!-- <user name="temporary" password="temporary" authorities="ROLE_ADMIN"
-    /> -->
-  <!-- <user name="user" password="user" authorities="ROLE_USER" /> -->
-  <!-- </user-service> -->
-  <!-- </authentication-provider> -->
-  <!-- </authentication-manager> -->
 
 </beans:beans>

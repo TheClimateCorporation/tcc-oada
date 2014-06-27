@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.climate.oada.dao.IResourceDAO;
 import com.climate.oada.vo.impl.LandUnit;
@@ -90,6 +91,11 @@ public final class PostGISResourceDAO implements IResourceDAO {
     @Override
     public List<LandUnit> getLandUnits(Long userId) {
         return getJdbcTemplate().query(SELECT_SQL_USER, new LandUnitRowMapper(), userId.toString());
+    }
+
+    @Override
+    public boolean saveFile(MultipartFile f) throws Exception {
+        throw new UnsupportedOperationException("PostGIS DAO does not support file upload");
     }
 
     /**

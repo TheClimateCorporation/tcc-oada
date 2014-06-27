@@ -1,9 +1,7 @@
 package com.climate.oada.api;
 
-import com.climate.oada.vo.IPermission;
-import com.climate.oada.vo.IResource;
-
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,7 +11,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.climate.oada.vo.IPermission;
+import com.climate.oada.vo.IResource;
 
 /**
  * Interface class for all the OADA APIs.
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public interface IOADAAPI {
 
     String OADA_FIELDS_CONTENT_TYPE = "application/vnd.oada.fields+json";
+    String OADA_PRESCRIPTIONS_CONTENT_TYPE = "applicaiton/vnd.oada.prescription";
 
     /**
      * OADA's /resources API 's responsibilities include: Storing all data:
@@ -40,7 +44,8 @@ public interface IOADAAPI {
      */
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
     @ResponseBody
-    List<IResource> getResources(@RequestHeader(value = "Authorization") String accessToken,
+    List<IResource> getResources(
+            @RequestHeader(value = "Authorization") String accessToken,
             HttpServletRequest request,
             HttpServletResponse response);
 
@@ -60,11 +65,31 @@ public interface IOADAAPI {
      *
      * @return JSON representation of resources.
      */
-    @RequestMapping(value = "/resources", method = RequestMethod.POST)
+    @RequestMapping(value = "/resources", method = RequestMethod.PUT)
     @ResponseBody
-    List<IResource> updateResources(@RequestHeader(value = "Authorization") String accessToken,
+    List<IResource> updateResources(
+            @RequestHeader(value = "Authorization") String accessToken,
             @RequestBody String resources, HttpServletRequest request,
             HttpServletResponse response);
+
+    /**
+     * OADA's /resources API 's responsibilities include: Storing all data:
+     * binary files, JSON documents, etc. Storing user defined metadata about
+     * the resource. Transform and represent data in multiple formats. Organize
+     * the data in a parent/child structure (think Google Drive). Share data
+     * with other users.
+     *
+     * This REST API specifically uploads a file resource via POST.
+     *
+     * @param file - File to upload.
+     * @return ResponseEntity - JSON
+     */
+    @RequestMapping(value = "/resources", method = RequestMethod.POST,
+            consumes = "multipart/form-data", produces = "application/json")
+    @ResponseBody
+    Map<String, String> uploadFile(
+            @RequestHeader(value = "Authorization", required = true) String accessToken,
+            @RequestParam("file") MultipartFile file);
 
     /**
      * Returns a specific resource identified by a "resourceId".
