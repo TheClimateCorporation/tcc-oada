@@ -54,8 +54,11 @@ public final class OADAAPIController implements IOADAAPI {
             @RequestHeader(value = "Authorization") String accessToken,
             HttpServletRequest request,
             HttpServletResponse response) {
-        // TODO Auto-generated method stub
-        return null;
+        List<IResource> retval = new ArrayList<IResource>();
+        Long userId = extractUserId(accessToken);
+        retval.addAll(getResourceDAO().getLandUnits(userId));
+        retval.addAll(getS3DAO().fileURLs(userId));
+        return retval;
     }
 
     @Override
@@ -63,7 +66,7 @@ public final class OADAAPIController implements IOADAAPI {
             @RequestHeader(value = "Authorization") String accessToken,
             String resources,
             HttpServletRequest request, HttpServletResponse response) {
-        // TODO Unravel or map accessToken to user id.
+        Long userId = extractUserId(accessToken);
         String inContentType = request.getContentType();
         if (OADA_FIELDS_CONTENT_TYPE.equalsIgnoreCase(inContentType)) {
             /*
@@ -74,6 +77,7 @@ public final class OADAAPIController implements IOADAAPI {
              */
             List<LandUnit> lus = processFields(resources);
             for (LandUnit lu : lus) {
+                lu.setUserId(userId);
                 getResourceDAO().insert(lu);
             }
         }
@@ -289,7 +293,7 @@ public final class OADAAPIController implements IOADAAPI {
      * Getter for S3 DAO.
      * @return the s3DAO
      */
-    public IResourceDAO getS3DAO() {
+    public S3ResourceDAO getS3DAO() {
         return s3DAO;
     }
 
@@ -299,6 +303,16 @@ public final class OADAAPIController implements IOADAAPI {
      */
     public void setS3DAO(S3ResourceDAO s3dao) {
         s3DAO = s3dao;
+    }
+
+    /**
+     * Extract / map / unravel userid from token.
+     * @param token - auth token.
+     * @return Long - userid.
+     */
+    private Long extractUserId(String token) {
+        //TODO Unravel or map accessToken to user id.
+        return null;
     }
 
 }
