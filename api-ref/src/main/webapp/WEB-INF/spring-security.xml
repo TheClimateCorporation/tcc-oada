@@ -49,7 +49,8 @@
     class="org.springframework.security.oauth2.provider.error.OAuth2AccessDeniedHandler" />
 
   <oauth:authorization-server
-    client-details-service-ref="clientDetails" token-services-ref="tokenServices">
+    client-details-service-ref="clientDetails"
+    token-services-ref="tokenServices">
     <oauth:authorization-code />
     <oauth:implicit />
     <oauth:refresh-token />

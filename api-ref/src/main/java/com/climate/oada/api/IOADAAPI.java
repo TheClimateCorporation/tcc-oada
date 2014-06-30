@@ -81,6 +81,7 @@ public interface IOADAAPI {
      *
      * This REST API specifically uploads a file resource via POST.
      *
+     * @param accessToken - OAuth token.
      * @param file - File to upload.
      * @return ResponseEntity - JSON
      */
@@ -88,7 +89,7 @@ public interface IOADAAPI {
             consumes = "multipart/form-data", produces = "application/json")
     @ResponseBody
     Map<String, String> uploadFile(
-            @RequestHeader(value = "Authorization", required = true) String accessToken,
+            @RequestHeader(value = "Authorization") String accessToken,
             @RequestParam("file") MultipartFile file);
 
     /**
