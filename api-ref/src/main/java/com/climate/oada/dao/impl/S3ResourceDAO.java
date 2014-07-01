@@ -33,6 +33,8 @@ public class S3ResourceDAO implements IResourceDAO {
 
     static final Logger LOG = LoggerFactory.getLogger(S3ResourceDAO.class);
 
+    static final String S3_SEPARATOR = "/";
+
     static final int HOURS_TO_MILLISECONDS = 60 * 60 * 1000;
 
     @Value("${s3.bucket}")
@@ -141,15 +143,17 @@ public class S3ResourceDAO implements IResourceDAO {
     }
 
     @Override
-    public List<FileResource> getFileUrls(Long userId) {
+    public List<FileResource> getFileUrls(Long userId, String type) {
         List<FileResource> retval = new ArrayList<FileResource>();
         long validfor = new Long(validHours) * HOURS_TO_MILLISECONDS;
         AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
         try {
-            LOG.debug("Listing objects for user " + userId);
+            String prefix = userId.toString() + S3_SEPARATOR + type;
+
+            LOG.debug("Listing objects from bucket " + bucketName + " with prefix " + prefix);
 
             ListObjectsRequest listObjectsRequest = new ListObjectsRequest()
-                    .withBucketName(bucketName).withPrefix(userId.toString());
+                    .withBucketName(bucketName).withPrefix(prefix);
             ObjectListing objectListing;
             do {
                 objectListing = s3client.listObjects(listObjectsRequest);

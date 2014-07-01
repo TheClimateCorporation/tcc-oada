@@ -126,7 +126,7 @@ public final class DynamodbDAO implements IResourceDAO {
     }
 
     @Override
-    public List<FileResource> getFileUrls(Long userId) {
+    public List<FileResource> getFileUrls(Long userId, String type) {
         throw new UnsupportedOperationException("DynamoDDB DAO does not support file urls");
     }
 
