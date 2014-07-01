@@ -37,17 +37,20 @@ public interface IOADAAPI {
      * This REST API specifically returns a list of resources.
      *
      * @param accessToken - OAuth 2.0 token.
+     * @param resourceTypes - List of resource types to filter on.
      * @param request HttpServletRequest
      * @param response HttpServletResponse
      *
      * @return JSON representation of resources.
+     * @throws Exception in case of error.
      */
     @RequestMapping(value = "/resources", method = RequestMethod.GET)
     @ResponseBody
     List<IResource> getResources(
             @RequestHeader(value = "Authorization") String accessToken,
+            @RequestParam(value = "resourceType") String[] resourceTypes,
             HttpServletRequest request,
-            HttpServletResponse response);
+            HttpServletResponse response) throws Exception;
 
     /**
      * OADA's /resources API 's responsibilities include: Storing all data:
@@ -65,7 +68,7 @@ public interface IOADAAPI {
      *
      * @return JSON representation of resources.
      */
-    @RequestMapping(value = "/resources", method = RequestMethod.PUT)
+    @RequestMapping(value = "/resources", method = RequestMethod.POST)
     @ResponseBody
     List<IResource> updateResources(
             @RequestHeader(value = "Authorization") String accessToken,

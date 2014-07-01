@@ -1,12 +1,15 @@
 package com.climate.oada.controller;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,7 +23,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.climate.oada.api.IOADAAPI;
+import com.climate.oada.api.OADAAPIUtils;
 import com.climate.oada.dao.IResourceDAO;
+import com.climate.oada.vo.IResource;
+import com.climate.oada.vo.impl.FileResource;
 import com.climate.oada.vo.impl.LandUnit;
 
 /**
@@ -57,6 +63,9 @@ public final class OADAAPIControllerTest {
     private HttpServletRequest request;
     private HttpServletResponse response;
     private IResourceDAO resourceDAO;
+    private IResourceDAO s3DAO;
+    private List<LandUnit> dummyLandUnits = new ArrayList<LandUnit>();
+    private List<FileResource> dummyFiles = new ArrayList<FileResource>();
 
 
     /**
@@ -74,7 +83,9 @@ public final class OADAAPIControllerTest {
         request = Mockito.mock(HttpServletRequest.class);
         response = Mockito.mock(HttpServletResponse.class);
         resourceDAO = Mockito.mock(IResourceDAO.class);
-        controller.setResourceDAO(resourceDAO);
+        s3DAO = Mockito.mock(IResourceDAO.class);
+        controller.setFieldsResourceDAO(resourceDAO);
+        controller.setS3DAO(s3DAO);
     }
 
     /**
@@ -113,4 +124,114 @@ public final class OADAAPIControllerTest {
         controller.updateResources(null, FIELDS_INPUT_2, request, response);
         verify(resourceDAO, times(FIELDS_INPUT_2_LEN)).insert(Matchers.any(LandUnit.class));
     }
+
+    /**
+     * Tests get resources API.
+     * @throws Exception in case of error.
+     */
+    @Test
+    public void testGetResources1() throws Exception {
+        dummyLandUnits.add(new LandUnit());
+        dummyFiles.add(new FileResource());
+        OADAAPIController spy = spy(controller);
+        when(spy.extractUserId(Matchers.anyString())).thenReturn(null);
+        when(resourceDAO.getLandUnits(Matchers.anyLong())).thenReturn(dummyLandUnits);
+        when(s3DAO.getFileUrls(Matchers.anyLong())).thenReturn(dummyFiles);
+        List<IResource> retval = spy.getResources(null, null, request, response);
+        assertNull(retval);
+        verify(resourceDAO, never()).getLandUnits(Matchers.anyLong());
+        verify(s3DAO, never()).getFileUrls(Matchers.anyLong());
+        verify(response, times(1)).sendError(Matchers.eq(HttpServletResponse.SC_BAD_REQUEST),
+                Matchers.eq(OADAAPIUtils.INVALID_ACCESS_TOKEN));
+    }
+
+    /**
+     * Tests get resources API.
+     * @throws Exception in case of error.
+     */
+    @Test
+    public void testGetResources2() throws Exception {
+        dummyLandUnits.add(new LandUnit());
+        dummyFiles.add(new FileResource());
+        OADAAPIController spy = spy(controller);
+        when(spy.extractUserId(Matchers.anyString())).thenReturn(new Long(1));
+        when(resourceDAO.getLandUnits(Matchers.anyLong())).thenReturn(dummyLandUnits);
+        when(s3DAO.getFileUrls(Matchers.anyLong())).thenReturn(dummyFiles);
+        List<IResource> retval = spy.getResources(null, null, request, response);
+        assertNotNull(retval);
+        assertTrue(retval.size() == (dummyFiles.size() + dummyLandUnits.size()));
+        verify(resourceDAO, times(1)).getLandUnits(Matchers.anyLong());
+        verify(s3DAO, times(1)).getFileUrls(Matchers.anyLong());
+        verify(response, never()).sendError(Matchers.anyInt(), Matchers.anyString());
+    }
+
+    /**
+     * Tests get resources API.
+     * @throws Exception in case of error.
+     */
+    @Test
+    public void testGetResources3() throws Exception {
+        dummyLandUnits.add(new LandUnit());
+        dummyLandUnits.add(new LandUnit());
+        dummyFiles.add(new FileResource());
+        OADAAPIController spy = spy(controller);
+        when(spy.extractUserId(Matchers.anyString())).thenReturn(new Long(1));
+        when(resourceDAO.getLandUnits(Matchers.anyLong())).thenReturn(dummyLandUnits);
+        when(s3DAO.getFileUrls(Matchers.anyLong())).thenReturn(dummyFiles);
+        String[] resourceTypes = new String[1];
+        resourceTypes[0] = IOADAAPI.OADA_FIELDS_CONTENT_TYPE;
+        List<IResource> retval = spy.getResources(null, resourceTypes, request, response);
+        assertNotNull(retval);
+        assertTrue(retval.size() == dummyLandUnits.size());
+        verify(resourceDAO, times(1)).getLandUnits(Matchers.anyLong());
+        verify(s3DAO, never()).getFileUrls(Matchers.anyLong());
+        verify(response, never()).sendError(Matchers.anyInt(), Matchers.anyString());
+    }
+
+    /**
+     * Tests get resources API.
+     * @throws Exception in case of error.
+     */
+    @Test
+    public void testGetResources4() throws Exception {
+        dummyLandUnits.add(new LandUnit());
+        dummyLandUnits.add(new LandUnit());
+        dummyFiles.add(new FileResource());
+        OADAAPIController spy = spy(controller);
+        when(spy.extractUserId(Matchers.anyString())).thenReturn(new Long(1));
+        when(resourceDAO.getLandUnits(Matchers.anyLong())).thenReturn(dummyLandUnits);
+        when(s3DAO.getFileUrls(Matchers.anyLong())).thenReturn(dummyFiles);
+        String[] resourceTypes = new String[1];
+        resourceTypes[0] = IOADAAPI.OADA_PRESCRIPTIONS_CONTENT_TYPE;
+        List<IResource> retval = spy.getResources(null, resourceTypes, request, response);
+        assertNotNull(retval);
+        assertTrue(retval.size() == dummyFiles.size());
+        verify(resourceDAO, never()).getLandUnits(Matchers.anyLong());
+        verify(s3DAO, times(1)).getFileUrls(Matchers.anyLong());
+        verify(response, never()).sendError(Matchers.anyInt(), Matchers.anyString());
+    }
+
+    /**
+     * Tests get resources API.
+     * @throws Exception in case of error.
+     */
+    @Test
+    public void testGetResources5() throws Exception {
+        dummyLandUnits.add(new LandUnit());
+        dummyFiles.add(new FileResource());
+        OADAAPIController spy = spy(controller);
+        when(spy.extractUserId(Matchers.anyString())).thenReturn(new Long(1));
+        when(resourceDAO.getLandUnits(Matchers.anyLong())).thenReturn(dummyLandUnits);
+        when(s3DAO.getFileUrls(Matchers.anyLong())).thenReturn(dummyFiles);
+        String[] resourceTypes = new String[2];
+        resourceTypes[0] = IOADAAPI.OADA_FIELDS_CONTENT_TYPE;
+        resourceTypes[1] = IOADAAPI.OADA_PRESCRIPTIONS_CONTENT_TYPE;
+        List<IResource> retval = spy.getResources(null, resourceTypes, request, response);
+        assertNotNull(retval);
+        assertTrue(retval.size() == (dummyFiles.size() + dummyLandUnits.size()));
+        verify(resourceDAO, times(1)).getLandUnits(Matchers.anyLong());
+        verify(s3DAO, times(1)).getFileUrls(Matchers.anyLong());
+        verify(response, never()).sendError(Matchers.anyInt(), Matchers.anyString());
+    }
+
 }
