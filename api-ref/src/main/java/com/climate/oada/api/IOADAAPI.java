@@ -25,7 +25,9 @@ import com.climate.oada.vo.IResource;
 public interface IOADAAPI {
 
     String OADA_FIELDS_CONTENT_TYPE = "application/vnd.oada.fields+json";
-    String OADA_PRESCRIPTIONS_CONTENT_TYPE = "applicaiton/vnd.oada.prescription";
+    String OADA_PRESCRIPTIONS_CONTENT_TYPE = "application/vnd.oada.prescription";
+    String OADA_AS_PLANTED_CONTENT_TYPE = "application/vnd.oada.as-planted";
+    String OADA_AS_HARVESTED_CONTENT_TYPE = "application/vnd.oada.as-harvested";
 
     /**
      * OADA's /resources API 's responsibilities include: Storing all data:

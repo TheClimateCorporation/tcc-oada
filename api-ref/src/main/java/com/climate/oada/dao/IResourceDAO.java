@@ -41,8 +41,9 @@ public interface IResourceDAO {
      * Return a list of S3 URLs for given user.
      *
      * @param userId - input user.
+     * @param type - file type
      * @return List of URLs.
      */
-    List<FileResource> getFileUrls(Long userId);
+    List<FileResource> getFileUrls(Long userId, String type);
 
 }

@@ -46,6 +46,21 @@ public class OADAAPIController implements IOADAAPI {
     public OADAAPIController() {
     }
 
+    /**
+     * Check if the resource is a file type.
+     * @param type of resource.
+     * @return boolean
+     */
+    boolean isFileType(String type) {
+        if (IOADAAPI.OADA_PRESCRIPTIONS_CONTENT_TYPE.equalsIgnoreCase(type)
+                || IOADAAPI.OADA_AS_PLANTED_CONTENT_TYPE.equalsIgnoreCase(type)
+                || IOADAAPI.OADA_AS_HARVESTED_CONTENT_TYPE
+                        .equalsIgnoreCase(type)) {
+            return true;
+        }
+        return false;
+    }
+
     @Override
     public List<IResource> getResources(
             @RequestHeader(value = "Authorization") String accessToken,
@@ -62,11 +77,12 @@ public class OADAAPIController implements IOADAAPI {
                 requestedResourceTypes.add(IOADAAPI.OADA_PRESCRIPTIONS_CONTENT_TYPE);
             }
             retval = new ArrayList<IResource>();
-            if (requestedResourceTypes.contains(IOADAAPI.OADA_FIELDS_CONTENT_TYPE)) {
-                retval.addAll(getFieldsResourceDAO().getLandUnits(userId));
-            }
-            if (requestedResourceTypes.contains(IOADAAPI.OADA_PRESCRIPTIONS_CONTENT_TYPE)) {
-                retval.addAll(getS3DAO().getFileUrls(userId));
+            for (String type : requestedResourceTypes) {
+                if (IOADAAPI.OADA_FIELDS_CONTENT_TYPE.equalsIgnoreCase(type)) {
+                    retval.addAll(getFieldsResourceDAO().getLandUnits(userId));
+                } else if (isFileType(type)) {
+                    retval.addAll(getS3DAO().getFileUrls(userId, type));
+                }
             }
         } else {
             response.sendError(HttpServletResponse.SC_BAD_REQUEST,

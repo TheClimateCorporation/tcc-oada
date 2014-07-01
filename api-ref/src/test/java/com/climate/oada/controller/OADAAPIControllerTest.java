@@ -136,11 +136,11 @@ public final class OADAAPIControllerTest {
         OADAAPIController spy = spy(controller);
         when(spy.extractUserId(Matchers.anyString())).thenReturn(null);
         when(resourceDAO.getLandUnits(Matchers.anyLong())).thenReturn(dummyLandUnits);
-        when(s3DAO.getFileUrls(Matchers.anyLong())).thenReturn(dummyFiles);
+        when(s3DAO.getFileUrls(Matchers.anyLong(), Matchers.anyString())).thenReturn(dummyFiles);
         List<IResource> retval = spy.getResources(null, null, request, response);
         assertNull(retval);
         verify(resourceDAO, never()).getLandUnits(Matchers.anyLong());
-        verify(s3DAO, never()).getFileUrls(Matchers.anyLong());
+        verify(s3DAO, never()).getFileUrls(Matchers.anyLong(), Matchers.anyString());
         verify(response, times(1)).sendError(Matchers.eq(HttpServletResponse.SC_BAD_REQUEST),
                 Matchers.eq(OADAAPIUtils.INVALID_ACCESS_TOKEN));
     }
@@ -156,12 +156,12 @@ public final class OADAAPIControllerTest {
         OADAAPIController spy = spy(controller);
         when(spy.extractUserId(Matchers.anyString())).thenReturn(new Long(1));
         when(resourceDAO.getLandUnits(Matchers.anyLong())).thenReturn(dummyLandUnits);
-        when(s3DAO.getFileUrls(Matchers.anyLong())).thenReturn(dummyFiles);
+        when(s3DAO.getFileUrls(Matchers.anyLong(), Matchers.anyString())).thenReturn(dummyFiles);
         List<IResource> retval = spy.getResources(null, null, request, response);
         assertNotNull(retval);
         assertTrue(retval.size() == (dummyFiles.size() + dummyLandUnits.size()));
         verify(resourceDAO, times(1)).getLandUnits(Matchers.anyLong());
-        verify(s3DAO, times(1)).getFileUrls(Matchers.anyLong());
+        verify(s3DAO, times(1)).getFileUrls(Matchers.anyLong(), Matchers.anyString());
         verify(response, never()).sendError(Matchers.anyInt(), Matchers.anyString());
     }
 
@@ -177,14 +177,14 @@ public final class OADAAPIControllerTest {
         OADAAPIController spy = spy(controller);
         when(spy.extractUserId(Matchers.anyString())).thenReturn(new Long(1));
         when(resourceDAO.getLandUnits(Matchers.anyLong())).thenReturn(dummyLandUnits);
-        when(s3DAO.getFileUrls(Matchers.anyLong())).thenReturn(dummyFiles);
+        when(s3DAO.getFileUrls(Matchers.anyLong(), Matchers.anyString())).thenReturn(dummyFiles);
         String[] resourceTypes = new String[1];
         resourceTypes[0] = IOADAAPI.OADA_FIELDS_CONTENT_TYPE;
         List<IResource> retval = spy.getResources(null, resourceTypes, request, response);
         assertNotNull(retval);
         assertTrue(retval.size() == dummyLandUnits.size());
         verify(resourceDAO, times(1)).getLandUnits(Matchers.anyLong());
-        verify(s3DAO, never()).getFileUrls(Matchers.anyLong());
+        verify(s3DAO, never()).getFileUrls(Matchers.anyLong(), Matchers.anyString());
         verify(response, never()).sendError(Matchers.anyInt(), Matchers.anyString());
     }
 
@@ -200,14 +200,14 @@ public final class OADAAPIControllerTest {
         OADAAPIController spy = spy(controller);
         when(spy.extractUserId(Matchers.anyString())).thenReturn(new Long(1));
         when(resourceDAO.getLandUnits(Matchers.anyLong())).thenReturn(dummyLandUnits);
-        when(s3DAO.getFileUrls(Matchers.anyLong())).thenReturn(dummyFiles);
+        when(s3DAO.getFileUrls(Matchers.anyLong(), Matchers.anyString())).thenReturn(dummyFiles);
         String[] resourceTypes = new String[1];
         resourceTypes[0] = IOADAAPI.OADA_PRESCRIPTIONS_CONTENT_TYPE;
         List<IResource> retval = spy.getResources(null, resourceTypes, request, response);
         assertNotNull(retval);
         assertTrue(retval.size() == dummyFiles.size());
         verify(resourceDAO, never()).getLandUnits(Matchers.anyLong());
-        verify(s3DAO, times(1)).getFileUrls(Matchers.anyLong());
+        verify(s3DAO, times(1)).getFileUrls(Matchers.anyLong(), Matchers.anyString());
         verify(response, never()).sendError(Matchers.anyInt(), Matchers.anyString());
     }
 
@@ -222,7 +222,7 @@ public final class OADAAPIControllerTest {
         OADAAPIController spy = spy(controller);
         when(spy.extractUserId(Matchers.anyString())).thenReturn(new Long(1));
         when(resourceDAO.getLandUnits(Matchers.anyLong())).thenReturn(dummyLandUnits);
-        when(s3DAO.getFileUrls(Matchers.anyLong())).thenReturn(dummyFiles);
+        when(s3DAO.getFileUrls(Matchers.anyLong(), Matchers.anyString())).thenReturn(dummyFiles);
         String[] resourceTypes = new String[2];
         resourceTypes[0] = IOADAAPI.OADA_FIELDS_CONTENT_TYPE;
         resourceTypes[1] = IOADAAPI.OADA_PRESCRIPTIONS_CONTENT_TYPE;
@@ -230,7 +230,7 @@ public final class OADAAPIControllerTest {
         assertNotNull(retval);
         assertTrue(retval.size() == (dummyFiles.size() + dummyLandUnits.size()));
         verify(resourceDAO, times(1)).getLandUnits(Matchers.anyLong());
-        verify(s3DAO, times(1)).getFileUrls(Matchers.anyLong());
+        verify(s3DAO, times(1)).getFileUrls(Matchers.anyLong(), Matchers.anyString());
         verify(response, never()).sendError(Matchers.anyInt(), Matchers.anyString());
     }
 

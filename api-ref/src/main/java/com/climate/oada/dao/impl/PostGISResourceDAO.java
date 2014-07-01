@@ -100,7 +100,7 @@ public final class PostGISResourceDAO implements IResourceDAO {
     }
 
     @Override
-    public List<FileResource> getFileUrls(Long userId) {
+    public List<FileResource> getFileUrls(Long userId, String type) {
         throw new UnsupportedOperationException("PostGIS DAO does not support file urls");
     }
 
