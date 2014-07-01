@@ -5,4 +5,16 @@ package com.climate.oada.vo;
  */
 public interface IResource {
 
+    /**
+     * Setter for resource type.
+     * @param type of resource (mimetype etc)
+     */
+    void setResourceType(String type);
+
+    /**
+     * Getter for resource type.
+     * @return String
+     */
+    String getResourceType();
+
 }

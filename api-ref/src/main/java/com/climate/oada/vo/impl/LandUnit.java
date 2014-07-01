@@ -2,6 +2,7 @@ package com.climate.oada.vo.impl;
 
 import java.util.Map;
 
+import com.climate.oada.api.IOADAAPI;
 import com.climate.oada.vo.IResource;
 
 /**
@@ -207,5 +208,15 @@ public final class LandUnit implements IResource {
                 + SOURCE_ATTR_NAME + TO_STR_TAG_1  + getSource() + TO_STR_TAG_2
                 + GEOM_ATTR_NAME + TO_STR_TAG_1  + getWktBoundary();
         return retval;
+    }
+
+    @Override
+    public void setResourceType(String type) {
+        throw new UnsupportedOperationException("Cannot override resource type");
+    }
+
+    @Override
+    public String getResourceType() {
+        return IOADAAPI.OADA_FIELDS_CONTENT_TYPE;
     }
 }

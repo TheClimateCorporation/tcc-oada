@@ -29,7 +29,7 @@ import com.climate.oada.vo.impl.LandUnit;
  * DAO implementation that handles file upload / download to S3.
  *
  */
-public final class S3ResourceDAO implements IResourceDAO {
+public class S3ResourceDAO implements IResourceDAO {
 
     static final Logger LOG = LoggerFactory.getLogger(S3ResourceDAO.class);
 
@@ -140,13 +140,8 @@ public final class S3ResourceDAO implements IResourceDAO {
         return false;
     }
 
-    /**
-     * Return a list of S3 URLs for given user.
-     *
-     * @param userId - input user.
-     * @return List of URLs.
-     */
-    public List<FileResource> fileURLs(Long userId) {
+    @Override
+    public List<FileResource> getFileUrls(Long userId) {
         List<FileResource> retval = new ArrayList<FileResource>();
         long validfor = new Long(validHours) * HOURS_TO_MILLISECONDS;
         AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());

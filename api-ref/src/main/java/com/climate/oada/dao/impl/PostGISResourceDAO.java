@@ -15,6 +15,7 @@ import org.springframework.jdbc.core.RowMapper;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.climate.oada.dao.IResourceDAO;
+import com.climate.oada.vo.impl.FileResource;
 import com.climate.oada.vo.impl.LandUnit;
 
 /**
@@ -96,6 +97,11 @@ public final class PostGISResourceDAO implements IResourceDAO {
     @Override
     public boolean saveFile(MultipartFile f) throws Exception {
         throw new UnsupportedOperationException("PostGIS DAO does not support file upload");
+    }
+
+    @Override
+    public List<FileResource> getFileUrls(Long userId) {
+        throw new UnsupportedOperationException("PostGIS DAO does not support file urls");
     }
 
     /**

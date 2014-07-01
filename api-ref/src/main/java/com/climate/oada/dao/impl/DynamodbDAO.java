@@ -21,6 +21,7 @@ import com.amazonaws.services.dynamodbv2.model.PutItemResult;
 import com.amazonaws.services.dynamodbv2.model.ScanRequest;
 import com.amazonaws.services.dynamodbv2.model.ScanResult;
 import com.climate.oada.dao.IResourceDAO;
+import com.climate.oada.vo.impl.FileResource;
 import com.climate.oada.vo.impl.LandUnit;
 
 /**
@@ -122,6 +123,11 @@ public final class DynamodbDAO implements IResourceDAO {
     @Override
     public boolean saveFile(MultipartFile f) throws Exception {
         throw new UnsupportedOperationException("DynamoDDB DAO does not support file upload");
+    }
+
+    @Override
+    public List<FileResource> getFileUrls(Long userId) {
+        throw new UnsupportedOperationException("DynamoDDB DAO does not support file urls");
     }
 
 }

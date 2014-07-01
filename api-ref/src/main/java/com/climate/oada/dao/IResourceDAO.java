@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.climate.oada.vo.impl.FileResource;
 import com.climate.oada.vo.impl.LandUnit;
 
 /**
@@ -35,4 +36,13 @@ public interface IResourceDAO {
      * @throws Exception TODO
      */
     boolean saveFile(MultipartFile f) throws Exception;
+
+    /**
+     * Return a list of S3 URLs for given user.
+     *
+     * @param userId - input user.
+     * @return List of URLs.
+     */
+    List<FileResource> getFileUrls(Long userId);
+
 }
