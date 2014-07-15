@@ -35,6 +35,7 @@
   <root>
     <level value="DEBUG" />
     <appender-ref ref="consoleAppender" />
+    <appender-ref ref="dailyRollingFileAppender" />
   </root>
 </configuration>
 
