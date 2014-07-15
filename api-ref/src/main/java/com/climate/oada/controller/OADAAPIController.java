@@ -64,7 +64,7 @@ public class OADAAPIController implements IOADAAPI {
     @Override
     public List<IResource> getResources(
             @RequestHeader(value = "Authorization") String accessToken,
-            @RequestParam(value = "resourceType") String[] resourceTypes,
+            @RequestParam(value = "resourceType", required = false) String[] resourceTypes,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         List<IResource> retval = null;
         Long userId = extractUserId(accessToken);
@@ -350,7 +350,7 @@ public class OADAAPIController implements IOADAAPI {
      */
     Long extractUserId(String token) {
         // TODO Unravel or map accessToken to user id.
-        return null;
+        return new Long(-1);
     }
 
 }

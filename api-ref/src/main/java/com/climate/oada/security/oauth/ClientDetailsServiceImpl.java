@@ -1,5 +1,7 @@
 package com.climate.oada.security.oauth;
 
+import java.util.Arrays;
+
 import org.springframework.security.oauth2.provider.BaseClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
@@ -14,6 +16,7 @@ public final class ClientDetailsServiceImpl implements ClientDetailsService {
 
     private static final String CLIENT_ID = "client-test";
     private static final String CLIENT_SECRET = "client-secret";
+    private static final String[] GRANT_TYPES = {"authorization_code", "implicit"};
 
     /**
      * Default constructor.
@@ -27,6 +30,7 @@ public final class ClientDetailsServiceImpl implements ClientDetailsService {
         BaseClientDetails clientDetails = new BaseClientDetails();
         clientDetails.setClientId(CLIENT_ID);
         clientDetails.setClientSecret(CLIENT_SECRET);
+        clientDetails.setAuthorizedGrantTypes(Arrays.asList(GRANT_TYPES));
         return clientDetails;
     }
 
