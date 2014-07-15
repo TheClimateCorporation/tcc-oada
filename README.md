@@ -18,7 +18,7 @@ OADA Identity Federation is made up of all entities that decide to accept identi
 
 This reference implementation implements SSO using Spring Security SAML Extension with SSO Circle IDP service using SAML 2.0 protocol. Here is an overview of how SAML works in the context of SSO.
 
-[[saml_diagram.jpg|align=center]]
+![SAML Workflow](saml_diagram.jpg)
 
 We have a working example of Web SSO against a single Identity Provider. This can be extended to multiple identity providers. In the context of SAML this reference application is a "Service Provider" and SSOCircle (http://www.ssocircle.com) is the "Identity Provider". SSOCircle is a free SAML identity provider, which provides us with a very nice way of testing a SAML-based service provider without having to install a SAML identity provider. Here's how we do it.
 
@@ -57,7 +57,7 @@ In order to access a protected resource (viz. /oada/resources) client needs to p
 
 Here is how OAuth works:
 
-[[oauth_diagram.jpg|align=center]]
+![OAuth Workflow](oauth_diagram.jpg)
 
 #### Spring OAuth 2.0 Configuration
 
