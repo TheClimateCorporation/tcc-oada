@@ -16,7 +16,11 @@ The goal of this reference implementation is not to be exhaustive in terms of da
 
 OADA Identity Federation is made up of all entities that decide to accept identity assertions from one another. For a complete background on OADA Federated Identity see [OADA Federated Identity] (https://github.com/OADA/oada-wiki/wiki/Federated-Identity)
 
-This reference implementation implements SSO using Spring Security SAML Extension with SSO Circle IDP service using SAML 2.0 protocol. We have a working example of Web SSO against a single Identity Provider. This can be extended to multiple identity providers. In the context of SAML this reference application is a "Service Provider" and SSOCircle (http://www.ssocircle.com) is the "Identity Provider". SSOCircle is a free SAML identity provider, which provides us with a very nice way of testing a SAML-based service provider without having to install a SAML identity provider. Here's how we do it.
+This reference implementation implements SSO using Spring Security SAML Extension with SSO Circle IDP service using SAML 2.0 protocol. Here is an overview of how SAML works in the context of SSO.
+
+![SAML Workflow](saml_diagram.jpg)
+
+We have a working example of Web SSO against a single Identity Provider. This can be extended to multiple identity providers. In the context of SAML this reference application is a "Service Provider" and SSOCircle (http://www.ssocircle.com) is the "Identity Provider". SSOCircle is a free SAML identity provider, which provides us with a very nice way of testing a SAML-based service provider without having to install a SAML identity provider. Here's how we do it.
 
 * We have created a SSOCircle test account (Username: tcc-oada-1 Password: testoada)
 * We have uploaded our service provider metadata (more on this later) into https://idp.ssocircle.com/sso/hos/ManageSPMetadata.jsp
@@ -50,6 +54,10 @@ Once you deploy this reference web application locally, SP metadata can be downl
 ### OAUTH 2.0 Support
 
 In order to access a protected resource (viz. /oada/resources) client needs to provide an access token (OAuth 2.0 token). Server will authenticate the request based on the token. If token is valid then client will get an access to protected resource otherwise access is denied.
+
+Here is how OAuth works:
+
+![OAuth Workflow](oauth_diagram.jpg)
 
 #### Spring OAuth 2.0 Configuration
 
