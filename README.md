@@ -21,6 +21,8 @@ This reference implementation implements SSO using Spring Security SAML Extensio
 * We have created a SSOCircle test account (Username: tcc-oada-1 Password: testoada)
 * We have uploaded our service provider metadata (more on this later) into https://idp.ssocircle.com/sso/hos/ManageSPMetadata.jsp
 
+We have used Spring SAML Sample App as a reference to perform this integration. For more on this see: http://docs.spring.io/spring-security-saml/docs/1.0.x/reference/html/chapter-quick-start.html#quick-start-sp-metadata
+
 #### Spring SAML Configuration
 
 We have to added all the SAML beans in the saml-spring-security.xml
