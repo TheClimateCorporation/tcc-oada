@@ -57,7 +57,7 @@ In order to access a protected resource (viz. /oada/resources) client needs to p
 
 Here is how OAuth works:
 
-[[oauth_diagram.png|align=center]]
+[[oauth_diagram.jpg|align=center]]
 
 #### Spring OAuth 2.0 Configuration
 
