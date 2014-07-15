@@ -210,6 +210,12 @@
           <target>1.6</target>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.0.2.v20130417</version>
+      </plugin>
     </plugins>
   </build>
 

@@ -50,7 +50,7 @@ public interface IOADAAPI {
     @ResponseBody
     List<IResource> getResources(
             @RequestHeader(value = "Authorization") String accessToken,
-            @RequestParam(value = "resourceType") String[] resourceTypes,
+            @RequestParam(value = "resourceType", required = false) String[] resourceTypes,
             HttpServletRequest request,
             HttpServletResponse response) throws Exception;
 
