@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -91,7 +92,13 @@ public final class PostGISResourceDAO implements IResourceDAO {
 
     @Override
     public List<LandUnit> getLandUnits(Long userId) {
-        return getJdbcTemplate().query(SELECT_SQL_USER, new LandUnitRowMapper(), userId.toString());
+        List<LandUnit> retval = new ArrayList<LandUnit>();
+        try {
+            retval = getJdbcTemplate().query(SELECT_SQL_USER, new LandUnitRowMapper(), userId);
+        } catch (Exception e) {
+            LOG.error("Unable to retrieve landunits " + e.getMessage());
+        }
+        return retval;
     }
 
     @Override

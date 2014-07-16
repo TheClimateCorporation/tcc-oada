@@ -81,19 +81,25 @@ public final class DynamodbDAO implements IResourceDAO {
 
     @Override
     public List<LandUnit> getLandUnits(Long userId) {
-        /*
-         * Scan items for movies with user id attribute.
-         */
-        Map<String, Condition> scanFilter = new HashMap<String, Condition>();
-        Condition condition = new Condition()
-            .withComparisonOperator(ComparisonOperator.EQ.toString())
-            .withAttributeValueList(new AttributeValue().withN(userId.toString()));
-        scanFilter.put(LandUnit.USER_ID_ATTR_NAME, condition);
-        ScanRequest scanRequest =
-                new ScanRequest(LANDUNIT_DYNAMO_DB_TABLE_NAME).withScanFilter(scanFilter);
-        ScanResult scanResult = dynamoDB.scan(scanRequest);
-        LOG.debug("DDB Scan Result: " + scanResult);
-        return mapItemsToLandUnit(scanResult.getItems());
+        List<LandUnit> retval = new ArrayList<LandUnit>();
+        try {
+            /*
+             * Scan items for movies with user id attribute.
+             */
+            Map<String, Condition> scanFilter = new HashMap<String, Condition>();
+            Condition condition = new Condition()
+                .withComparisonOperator(ComparisonOperator.EQ.toString())
+                .withAttributeValueList(new AttributeValue().withN(userId.toString()));
+            scanFilter.put(LandUnit.USER_ID_ATTR_NAME, condition);
+            ScanRequest scanRequest =
+                    new ScanRequest(LANDUNIT_DYNAMO_DB_TABLE_NAME).withScanFilter(scanFilter);
+            ScanResult scanResult = dynamoDB.scan(scanRequest);
+            LOG.debug("DDB Scan Result: " + scanResult);
+            retval = mapItemsToLandUnit(scanResult.getItems());
+        } catch (Exception e) {
+            LOG.error("Unable to retrieve land units from DDB " + e.getMessage());
+        }
+        return retval;
     }
 
     /**

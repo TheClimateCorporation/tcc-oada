@@ -6,7 +6,7 @@ CREATE EXTENSION postgis;
 CREATE TABLE landunit
 (
   id bigserial NOT NULL,
-  userid bigint NOT NULL,
+  user_id bigint NOT NULL,
   name text NOT NULL,
   farm_name text,
   client_name text,
@@ -19,4 +19,4 @@ CREATE TABLE landunit
 
 CREATE INDEX lu_geo_idx_1 ON landunit USING gist (geom);
 
-CREATE INDEX lu_userid_idx_1 ON landunit (userid);
+CREATE INDEX lu_user_id_idx_1 ON landunit (user_id);

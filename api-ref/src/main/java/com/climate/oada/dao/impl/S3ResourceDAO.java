@@ -39,9 +39,11 @@ public class S3ResourceDAO implements IResourceDAO {
 
     @Value("${s3.bucket}")
     private String bucketName;
-    @Value("{s3.key}")
+
+    @Value("${s3.key}")
     private String keyName;
-    @Value("{s3.url.validhours}")
+
+    @Value("${s3.url.validhours}")
     private String validHours;
 
     /**
@@ -145,9 +147,9 @@ public class S3ResourceDAO implements IResourceDAO {
     @Override
     public List<FileResource> getFileUrls(Long userId, String type) {
         List<FileResource> retval = new ArrayList<FileResource>();
-        long validfor = new Long(validHours) * HOURS_TO_MILLISECONDS;
-        AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
+        long validfor = new Long(validHours).longValue() * HOURS_TO_MILLISECONDS;
         try {
+            AmazonS3 s3client = new AmazonS3Client(new ProfileCredentialsProvider());
             String prefix = userId.toString() + S3_SEPARATOR + type;
 
             LOG.debug("Listing objects from bucket " + bucketName + " with prefix " + prefix);
@@ -182,6 +184,8 @@ public class S3ResourceDAO implements IResourceDAO {
             logAWSServiceException(ase);
         } catch (AmazonClientException ace) {
             logAWSClientException(ace);
+        } catch (Exception e) {
+            LOG.error("Unable to retrieve S3 file URLs " + e.getMessage());
         }
         return retval;
     }
