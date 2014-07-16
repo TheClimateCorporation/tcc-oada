@@ -198,23 +198,8 @@ Once you deploy this reference web application locally, SP metadata can be downl
 
 ### OAUTH 2.0 Support
 
-In order to access a protected resource (viz. /oada/resources) client needs to provide an access token (OAuth 2.0 token). Server will authenticate the request based on the token. If token is valid then client will get an access to protected resource otherwise access is denied.
+[[OAuth 2.0 Support|oauth]]
 
-Here is how OAuth works:
-
-![OAuth Workflow](oauth_diagram.jpg)
-
-#### Spring OAuth 2.0 Configuration
-
-We have added all OAuth 2.0 beans in spring-security.xml. The reference implementation uses in memory token store.
-
-* A client application will send request to the URL “http://localhost:8080/oauth/token?grant_type=implicit” to retrieve an access token. 
-* Client is then pushed into the WebSSO work flow. In our case user needs to login via SSOCircle.
-** Client logs into SSOCircle
-** SSOCircle redirects the client back to our reference application. To be specific it redirects the client to http://localhost:8080/saml/SSO/alias/defaultAlias. This URL is part of the SP Metadata that we uploaded to SSO Circle.
-* Reference application then generates OAuth 2.0 token.
-
-Each OADA REST API requires an Authorization header with the OAuth token.
 
 ### Spring Security + Spring SAML + Spring OAuth 
 
@@ -223,6 +208,11 @@ The main interface which provides authentication services in Spring Security is 
 So in summary we end up with these changes:
 
 ```
+  <authentication-manager alias="authenticationManager"
+    xmlns="http://www.springframework.org/schema/security">
+    <authentication-provider ref="samlAuthenticationProvider"/>
+  </authentication-manager>
+
   <http authentication-manager-ref="authenticationManager"
     entry-point-ref="samlEntryPoint">
     <intercept-url pattern="/oauth/**" access="ROLE_USER" />
