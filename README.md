@@ -198,7 +198,7 @@ Once you deploy this reference web application locally, SP metadata can be downl
 
 ### OAUTH 2.0 Support
 
-[[OAuth 2.0 Support|oauth]]
+[OAuth 2.0 Support](oauth.md)
 
 
 ### Spring Security + Spring SAML + Spring OAuth 
