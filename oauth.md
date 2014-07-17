@@ -143,5 +143,14 @@ In the final state, we use implict grant flow (http://tools.ietf.org/html/rfc674
 * A client application will send request to the URL “http://localhost:8080/oauth/token?grant_type=implicit” to retrieve an access token. 
 * Client is then pushed into the WebSSO work flow. In our case user needs to login via SSOCircle. Client logs into SSOCircle.SSOCircle redirects the client back to our reference application. To be specific it redirects the client to http://localhost:8080/saml/SSO/alias/defaultAlias. This URL is part of the SP Metadata that we uploaded to SSO Circle.
 * Reference application then generates OAuth 2.0 token.
+* Client then uses this access token to make calls to /oada/** APIs. 
 
-Each OADA REST API requires an Authorization header with the OAuth token.
+Each OADA REST API requires an Authorization header with the OAuth token. OAuth Token is provided in the request as "Authorization" header like so:
+
+``` 
+User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36
+Authorization: Bearer f096f0bf-7414-4291-922f-d29eabd9d5f6kmmxgw9sIAXKsQS20t9JLQ==
+Accept: */*
+Accept-Encoding: gzip,deflate,sdch
+Accept-Language: en-US,en;q=0.8,ms;q=0.6,ta;q=0.4
+```
