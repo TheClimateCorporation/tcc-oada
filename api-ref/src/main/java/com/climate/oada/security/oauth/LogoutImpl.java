@@ -94,6 +94,8 @@ public final class LogoutImpl implements LogoutSuccessHandler {
                     LOG.info("Access OAuth token removed "
                             + oAuth2AccessToken);
                 }
+            } else {
+                throw new IllegalArgumentException("OAuth Token missing");
             }
         }
     }

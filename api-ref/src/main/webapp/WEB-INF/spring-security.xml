@@ -22,7 +22,7 @@
 
   <authentication-manager alias="authenticationManager"
     xmlns="http://www.springframework.org/schema/security">
-    <authentication-provider ref="samlAuthenticationProvider"/>
+    <authentication-provider ref="samlAuthenticationProvider" />
   </authentication-manager>
 
   <beans:bean id="clientDetailsUserService"
@@ -95,6 +95,14 @@
   <http security="none" pattern="/saml/web/**" />
   <http security="none" pattern="/favicon.ico" />
 
+  <http pattern="/oada/**" create-session="never" entry-point-ref="samlEntryPoint"
+    xmlns="http://www.springframework.org/schema/security">
+    <anonymous enabled="false" />
+    <intercept-url pattern="/oada/**" access="ROLE_USER" />
+    <custom-filter ref="resourceServerFilter" before="PRE_AUTH_FILTER" />
+    <access-denied-handler ref="oauthAccessDeniedHandler" />
+  </http>
+
   <http pattern="/logout" create-session="never"
     entry-point-ref="oauthAuthenticationEntryPoint"
     access-decision-manager-ref="accessDecisionManager"
@@ -112,7 +120,6 @@
   <http authentication-manager-ref="authenticationManager"
     entry-point-ref="samlEntryPoint">
     <intercept-url pattern="/oauth/**" access="ROLE_USER" />
-    <intercept-url pattern="/**" access="IS_AUTHENTICATED_FULLY" />
     <anonymous enabled="false" />
     <custom-filter before="FIRST" ref="metadataGeneratorFilter" />
     <custom-filter after="BASIC_AUTH_FILTER" ref="samlFilter" />
