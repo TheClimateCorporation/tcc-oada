@@ -4,11 +4,16 @@
 ## Introduction
 
 
-This open source implementation provides a basic skeleton implementation for OADA REST APIs. This reference implementation is in Java and is built using a combination of:
-* Spring MVC 
-* Spring Security (integrated with Spring SAML and Spring OAuth). 
+This open source implementation provides a basic skeleton implementation for
+OADA REST APIs. This reference implementation is in Java and is built using a
+combination of:
+  * Spring MVC 
+  * Spring Security (integrated with Spring SAML and Spring OAuth). 
 
-The goal of this reference implementation is not to be exhaustive in terms of data formats or backend storage systems. It is intended to be a reference implementation that illustrates how OADA Federated Identity could be implemented and on which various parties can build their implementations.
+The goal of this reference implementation is not to be exhaustive in terms of
+data formats or backend storage systems. It is intended to be a reference
+implementation that illustrates how OADA Federated Identity can be
+implemented and on which various parties can build their implementations.
 
 ## OADA Federated Identity
 
@@ -24,13 +29,27 @@ The goal of this reference implementation is not to be exhaustive in terms of da
 
 ### Tying it all together 
 
-Finally we tie Spring Security with Spring OAuth and Spring SAML. The main interface which provides authentication services in Spring Security is the AuthenticationManager. This bean instance is registered using the "authentication-manager" namespace element. Authentication Manager is the one that is responsible for the user’s authentication. Within it, there is a declaration of the provider, which holds the users and passwords. In most real world implementations, this provider directs to a JDBC, where all users are stored with their encrypted passwords. In case of WebSSO, we do not have to handle any users and passwords, since we delegate this to the Identity Provider. So, we change the declaration of our server to point to the authentication manager of the SAML Service Provider: this manager has a provider (SAMLAuthenticationProvider or some other class that extends it). This class implements the authenticate() method, that attempts to perform authentication of an Authentication object. 
+Having set up authentication and authorization, we tie them together with
+Spring Security. The main interface that provides authentication services in
+Spring Security is the AuthenticationManager. This class is a Bean instance
+that is registered using the "authentication-manager" namespace element.
 
-So in summary we end up with these changes:
+AuthenticationManager is responsible for the user’s authentication, and it
+contains a provider to hold the users and passwords. In most real world
+implementations, this provider directs to a JDBC, where all users are stored
+with their encrypted passwords. In case of WebSSO, we do not have to handle any
+users and passwords, since we delegate this to the Identity Provider, so we
+change the declaration of our server to point to the authentication manager of
+the SAML Service Provider. This manager has a provider
+(SAMLAuthenticationProvider or some child class). This class implements the
+authenticate() method, which performs authentication of an Authentication
+object. 
+
+So, in summary, we end up with these changes:
 
 ```
 <authentication-manager xmlns="http://www.springframework.org/schema/security" alias="authenticationManager">
-<authentication-provider ref="samlAuthenticationProvider"/>
+    <authentication-provider ref="samlAuthenticationProvider"/>
 </authentication-manager>
 
 <http authentication-manager-ref="authenticationManager" entry-point-ref="samlEntryPoint">
@@ -52,13 +71,15 @@ So in summary we end up with these changes:
 
 ### Compilation & Testing
 
-When building from source, sample web app can be built using [Maven](http://maven.apache.org/).
+When building from source, sample web app can be built using
+[Maven](http://maven.apache.org/).
 
 ```
 mvn clean install
 ```
 
-This command builds OADAAPIRef.war. The maven build file also includes the "jetty plugin". So you could test the application like so:
+This command builds OADAAPIRef.war. The maven build file also includes the
+"jetty plugin". So you could test the application like so:
 
 ```
 mvn jetty:run
@@ -68,23 +89,27 @@ mvn jetty:run
 
 You can deploy this in a servlet container of your choice.
 
-**In order for WebSSO via SAML to work, web app must be deployed at root context. Redirect url specified in Service Provider metadata is tied to root context**
+**In order for WebSSO via SAML to work, web app must be deployed at root
+context. The redirect url specified in Service Provider metadata is tied to
+root context.**
 
 
 ## Thanks
 
-The reference implementation borrows from Spring OAuth and Spring SAML examples from [Spring](http://spring.io/). Many thanks to those teams.
+The reference implementation borrows from Spring OAuth and Spring SAML examples
+from [Spring](http://spring.io/). Many thanks to those teams.
 
 ## License
 
-Copyright (C) 2014 The Climate Corporation and released under an Apache 2.0 license. You may not use this library except in compliance with the License. You may obtain a copy of the License at:
+Copyright (C) 2014 The Climate Corporation and released under an Apache 2.0
+license. You may not use this library except in compliance with the License.
+You may obtain a copy of the License at:
 
 http://www.apache.org/licenses/LICENSE-2.0
 
-See the NOTICE file distributed with this work for additional information regarding copyright ownership. Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
-
-
-
-
-
-
+See the NOTICE file distributed with this work for additional information
+regarding copyright ownership. Unless required by applicable law or agreed to
+in writing, software distributed under the License is distributed on an "AS IS"
+BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and limitations
+under the License.
