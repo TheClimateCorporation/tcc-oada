@@ -1,0 +1,3 @@
+0.1.0
+
+- Initial version with a full reference implementation of OADA federated identity over SAML 2.0 and OAuth. Most of the REST APIs stubbed out.
