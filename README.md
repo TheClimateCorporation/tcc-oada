@@ -44,7 +44,46 @@ So in summary we end up with these changes:
   </http>
 ```
 
+## Installation
 
+### Requirements
+
+* Supported application server or container (viz. Tomcat, Jetty)
+* Java 1.6+ SDK
+* Maven 3 or later.
+
+### Compilation & Testing
+
+When building from source, sample web app can be built using the maven.
+
+```
+mvn clean install
+```
+
+This command builds OADAAPIRef.war. The maven build file also includes the "jetty plugin". So you could test the application like so:
+
+```
+mvn jetty:run
+```
+
+### Deployment
+
+You can deploy this in a servlet container of your choice.
+
+**In order for WebSSO via SAML to work, web app must be deployed at root context. Reason being, the redirect url specified in Service Provider metadata is tied to root context**
+
+
+## Thanks
+
+The reference implementation borrows from Spring OAuth and Spring SAML examples from [Spring](http://spring.io/). Many thanks to those teams.
+
+## License
+
+Copyright (C) 2014 The Climate Corporation and released under an MIT license. You may not use this library except in compliance with the License. You may obtain a copy of the License at:
+
+http://opensource.org/licenses/MIT
+
+See the NOTICE file distributed with this work for additional information regarding copyright ownership. Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
 
 
 
