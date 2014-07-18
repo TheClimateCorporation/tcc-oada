@@ -1,9 +1,9 @@
 /*
- * Copyright (C) 2014 The Climate Corporation and released under an MIT license.
+ * Copyright (C) 2014 The Climate Corporation and released under an Apache 2.0 license.
  * You may not use this library except in compliance with the License.
  * You may obtain a copy of the License at:
 
- * http://opensource.org/licenses/MIT
+ * http://www.apache.org/licenses/LICENSE-2.0
 
  * See the NOTICE file distributed with this work for additional information regarding
  * copyright ownership. Unless required by applicable law or agreed to in writing,
