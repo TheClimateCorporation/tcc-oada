@@ -71,6 +71,36 @@ You can deploy this in a servlet container of your choice.
 **In order for WebSSO via SAML to work, web app must be deployed at root context. Redirect url specified in Service Provider metadata is tied to root context**
 
 
+### Usage
+
+Once you have deployed the sample web app, attempt to retrieve an OAuth token like so:
+
+```
+http://localhost:8080/oauth/token?grant_type=implicit
+```
+
+You will be asked to select an Identity Provider. Select http://idp.ssocircle.com and click "Login". You will be redirected to:
+
+```
+https://idp.ssocircle.com/sso/UI/Login?module=peopleMembership&goto=https%3A%2F%2Fidp.ssocircle.com%2Fsso%2FSSORedirect%2FmetaAlias%2Fssocircle%3FReqID%3Da3j024f680cihe0b54bj7f4ajh13hie%26index%3Dnull%26acsURL%3Dhttp%253A%252F%252Flocalhost%253A8080%252Fsaml%252FSSO%252Falias%252FdefaultAlias%26spEntityID%3Dsaml-test-app%253Atest-oada-2%253Asanfrancisco%26binding%3Durn%253Aoasis%253Anames%253Atc%253ASAML%253A2.0%253Abindings%253AHTTP-Artifact
+```
+
+Log in using the test credentials (username: tcc-oada-1 password: testoada) and you should be redirected back to
+
+```
+http://localhost:8080/oauth/token?grant_type=implicit
+```
+
+and you should see a sample response like so:
+
+```
+{
+	access_token: "ed3c1e7e-a377-45ec-96c2-8c6c37e4e2b0kmmxgw9sIAXKsQS20t9JLQ==",
+	token_type: "Bearer",
+	expires_in: 899999999
+}
+```
+ 	
 ## Thanks
 
 The reference implementation borrows from Spring OAuth and Spring SAML examples from [Spring](http://spring.io/). Many thanks to those teams.
